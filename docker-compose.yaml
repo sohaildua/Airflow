@@ -33,6 +33,8 @@ services:
     volumes:
       - ./store_files:/store_files_mysql/
       - ./mysql.cnf:/etc/mysql/mysql.cnf
+      - ./sql_files:/usr/local/airflow/sql_files
+
 
   webserver:
     build: ./dockerfiles
