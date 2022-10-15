@@ -34,6 +34,7 @@ services:
       - ./store_files:/store_files_mysql/
       - ./mysql.cnf:/etc/mysql/mysql.cnf
       - ./sql_files:/usr/local/airflow/sql_files
+    command: --secure-file-priv=''
 
 
   webserver:
@@ -59,6 +60,7 @@ services:
       - ./dags:/usr/local/airflow/dags
       - ./store_files:/usr/local/airflow/store_files_airflow
       - ./sql_files:/usr/local/airflow/sql_files
+      
       # - ./plugins:/usr/local/airflow/plugins
     ports:
       - "8080:8080"
