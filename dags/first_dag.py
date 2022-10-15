@@ -1,17 +1,16 @@
 try:
 
-    from datetime import timedelta
     from airflow import DAG
+    from datetime import timedelta,datetime
+    from airflow.operators.bash_operator import BashOperator
     from airflow.operators.python_operator import PythonOperator
-    from datetime import datetime
+    from datacleaner import data_cleaner
   
 
     print("All Dag modules are ok ......")
 except Exception as e:
     print("Error  {} ".format(e))
 
-def first_function_execute():
-    print("hello world")
 
 with DAG(
         dag_id="first_dag",
@@ -24,9 +23,9 @@ with DAG(
         },
         catchup=False) as f:
 
-    first_function_execute = PythonOperator(
-        task_id="first_function_execute",
-        python_callable=first_function_execute,
-        
-    )
+    t1 = BashOperator(task_id='check_file_exists', bash_command='shasum ~/store_files_airflow/raw_store_transactions.csv',retries =2 ,retry_delay=timedelta(seconds=15))
+    t2 = PythonOperator(task_id='clean_raw_csv', python_callable=data_cleaner)
+
+
+    t1 >> t2
     
